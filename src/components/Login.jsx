@@ -1,24 +1,47 @@
+import { useState, useRef } from "react";
+
 export default function Login() {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  function handleInputChange(event){
+    event.preventDefault();
+    let enteredEmail =emailRef.current.value;
+    let enteredPassword = passwordRef.current.value;
+    console.log(enteredEmail, enteredPassword);
+  }
   return (
-    <form>
-      <h2>Login</h2>
+   <form onSubmit={handleInputChange}>
+    <h2>Login</h2>
 
-      <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" />
-        </div>
+    <div className="control-row">
+     <div className="control no-margin">
+      <label htmlFor="email">Email</label>
+      <input
+       id="email"
+       type="email"
+       name="email"
+       ref={emailRef}
+       />
+     </div>
 
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" />
-        </div>
-      </div>
+     <div className="control no-margin">
+      <label htmlFor="password">Password</label>
+      <input
+       id="password"
+       type="password"
+       name="password"
+       ref={passwordRef}
+      />
+     </div>
+    </div>
 
-      <p className="form-actions">
-        <button className="button button-flat">Reset</button>
-        <button className="button">Login</button>
-      </p>
-    </form>
+    <p className="form-actions">
+     <button className="button button-flat">Reset</button>
+     <button
+      className="button">
+      Login
+     </button>
+    </p>
+   </form>
   );
 }
