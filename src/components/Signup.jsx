@@ -1,19 +1,9 @@
 import { useState } from "react";
 
 export default function Signup() {
-  const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false) 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const formData=new FormData(event.target);
-    const acquisitionChannel = formData.getAll("acquisition");
-    const data = Object.fromEntries(formData.entries());
-    if(data.password !== data['confirm-password']){
-      setPasswordsAreNotEqual(true);
-      return;
-    }
-  }
+  
   return (
-   <form onSubmit={handleSubmit}>
+   <form action={handleSubmit}>
     <h2>Welcome on board!</h2>
     <p>We just need a little bit of data from you to get you started 🚀</p>
 
