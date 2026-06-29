@@ -1,9 +1,41 @@
-import { useState } from "react";
+import { isEmail, isNotEmpty, isEqualsToOtherValue, hasMinLength } from "../util/validation";
+import { useActionState } from "react";
 
 export default function Signup() {
-  
+  function submitAction(prevFormState, formData) {
+    const email=formData.get('email');
+    const password=formData.get('password');
+    const confirmPassword=formData.get('confirm-password');
+    const firstName=formData.get('first-name');
+    const lastName=formData.get('last-name');
+    const role=formData.get('role');
+    const terms=formData.get('terms');
+    const acquisitionChannel = formData.getAll('acquisition');
+    let errors=[];
+    if(!isEmail(email)){
+      errors.push("Invalid email address" )
+    }
+    if(!isNotEmpty(password) || !hasMinLength(password,9)){
+      errors.push("You must provide the strong password");
+    } if(!isEqualsToOtherValue(password, confirmPassword)){
+      errors.push("Passwords must match");
+    } if(!isNotEmpty(firstName) || !isNotEmpty(lastName)){
+      errors.push("Please provide both names!");
+    }if(!isNotEmpty(role)){
+      errors.push("Please select a role!")
+    }if(!terms){
+      errors.push("You must aggree the Terms&Conditions of the company!")
+    }if(acquisitionChannel.length === 0){
+      errors.push("PLease select atleast one channel!");
+    } if(errors.length>0){
+      return {errors}
+    }
+    return {errors:null}
+  }
+
+  const [formState, formAction, pending]=useActionState(submitAction,{errors:null});
   return (
-   <form action={handleSubmit}>
+   <form action={formAction}>
     <h2>Welcome on board!</h2>
     <p>We just need a little bit of data from you to get you started 🚀</p>
 
@@ -38,7 +70,7 @@ export default function Signup() {
        required
       />
      </div>
-     <div className="control-error">{passwordsAreNotEqual && <p>Passwords must match</p>}</div>
+     {/* <div className="control-error">{passwordsAreNotEqual && <p>Passwords must match</p>}</div> */}
     </div>
 
     <hr />
@@ -124,6 +156,14 @@ export default function Signup() {
      </label>
     </div>
 
+    {formState.errors && (
+     <ul className="errors">
+      {formState.errors.map((error) => (
+       <li key={error}>{error}</li>
+      ))}
+     </ul>
+    )}
+
     <p className="form-actions">
      <button
       type="reset"
@@ -132,8 +172,9 @@ export default function Signup() {
      </button>
      <button
       type="submit"
-      className="button">
-      Sign up
+      className="button"
+      disabled={pending}>
+      {pending ? "Submitting..." : "Sign up"}
      </button>
     </p>
    </form>
