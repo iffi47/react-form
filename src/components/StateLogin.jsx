@@ -12,8 +12,13 @@ export default function Login() {
   password: false,
  });
 
- let emailIsInvalid = didBlur.email && !isEmail(enteredValue.email) && !isNotEmpty(enteredValue.email);
- let passwordIsInvalid = didBlur.password && hasMinLength(9) && !isNotEmpty(enteredValue.password);
+ const emailIsInvalid =
+  didBlur.email &&
+  (!isEmail(enteredValue.email) || !isNotEmpty(enteredValue.email));
+ const passwordIsInvalid =
+  didBlur.password &&
+  (!hasMinLength(enteredValue.password, 9) ||
+   !isNotEmpty(enteredValue.password));
   function handleLogin(event) {
   event.preventDefault();
   console.log("submit");
