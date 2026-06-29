@@ -9,7 +9,7 @@ export default function Login() {
   handleInputChange: handleEmailChange,
   hasError: emailIsInvalid
  } = useInput("", (value) => {
-  return isEmail(value) && isNonEmpty(value);
+  return isEmail(value) && isNotEmpty(value);
  });
  const {
   value: passwordValue,
